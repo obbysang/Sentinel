@@ -1,18 +1,10 @@
 import React, { useRef } from 'react';
-import { ArrowRight, ChevronDown, ScanEye, Brain, FileText, Github, Minus, Plus, Lock, Server, Database, AlertTriangle, HardHat } from 'lucide-react';
+import { ArrowRight, ChevronDown, Github, Minus, Plus, Lock, Server, Database } from 'lucide-react';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import VideoPlayer from '../components/VideoPlayer';
-import ErrorBoundary from '../components/ErrorBoundary';
-import { Worker } from '../api';
 import HowItWorks from '../components/HowItWorks';
-
-const DEMO_WORKERS: Worker[] = [
-  { id: 'WK-01', x: 20, y: 20, hasHelmet: true, hasVest: true, zone: 'Safe', status: 'Working', lastSeen: new Date().toISOString() },
-  { id: 'WK-02', x: 70, y: 30, hasHelmet: true, hasVest: false, zone: 'Loading Dock', status: 'Moving', lastSeen: new Date().toISOString() },
-  { id: 'WK-03', x: 15, y: 70, hasHelmet: false, hasVest: true, zone: 'Excavation Pit', status: 'Stationary', lastSeen: new Date().toISOString() },
-];
+import Logo from '../components/Logo';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -93,9 +85,7 @@ const LandingPage = ({ onEnter }: { onEnter: () => void }) => {
         {/* Navbar (Floating) */}
         <nav className="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center z-50">
            <div className="flex items-center gap-2 cursor-pointer" onClick={onEnter}>
-              <div className="w-6 h-6 border-2 border-white rounded-full flex items-center justify-center">
-                 <div className="w-2 h-2 bg-white rounded-full"></div>
-              </div>
+              <Logo className="w-8 h-8" />
               <span className="font-bold tracking-tight text-lg">Sentinel®</span>
            </div>
            <div className="hidden md:flex gap-8 text-sm font-medium text-slate-300">
@@ -188,79 +178,23 @@ const LandingPage = ({ onEnter }: { onEnter: () => void }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                {/* Card 1 */}
-               <div className="feature-card bg-munch-card rounded-2xl p-1 overflow-hidden group shadow-xl">
-                  <div className="bg-[#1e221e] rounded-xl h-full p-6 flex flex-col justify-between min-h-[320px] relative overflow-hidden">
-                     <div className="z-10">
-                        <div className="text-xs font-mono text-emerald-400 mb-2">Monitor</div>
-                        <h4 className="text-white font-bold text-lg mb-2">Autonomous Monitoring</h4>
-                        <p className="text-slate-400 text-xs leading-relaxed">
-                           Zero human intervention required. Sentinel watches high-risk zones 24/7, never blinking, never sleeping.
-                        </p>
-                     </div>
-                     <div className="mt-8 relative h-32 bg-black/40 rounded-lg border border-white/5 p-3 flex items-center justify-center">
-                        <ScanEye size={48} className="text-emerald-500 opacity-80" />
-                        <div className="absolute top-2 right-2 flex gap-1">
-                           <div className="w-1 h-1 bg-red-500 rounded-full animate-pulse"></div>
-                           <div className="w-1 h-1 bg-white rounded-full"></div>
-                        </div>
-                     </div>
-                  </div>
+               <div className="feature-card rounded-2xl overflow-hidden group shadow-xl cursor-pointer hover:scale-[1.02] transition-transform duration-300">
+                  <img src="/assets/monitor.webp" alt="Autonomous Monitoring" className="w-full h-full object-cover" />
                </div>
 
-               {/* Card 2 (NEW) */}
-               <div className="feature-card bg-munch-card rounded-2xl p-1 overflow-hidden group shadow-xl">
-                  <div className="bg-[#1e221e] rounded-xl h-full p-6 flex flex-col justify-between min-h-[320px]">
-                     <div className="z-10">
-                        <div className="text-xs font-mono text-orange-400 mb-2">Detect</div>
-                        <h4 className="text-white font-bold text-lg mb-2">Real-time PPE Compliance</h4>
-                        <p className="text-slate-400 text-xs leading-relaxed">
-                           Instantly identifies missing helmets, vests, and safety gear with high precision computer vision models.
-                        </p>
-                     </div>
-                      <div className="mt-8 flex justify-center items-center h-32 relative">
-                         <HardHat size={48} className="text-orange-500 opacity-80" />
-                         <div className="absolute -top-2 -right-2 w-2 h-2 bg-orange-200 rounded-full animate-ping"></div>
-                      </div>
-                  </div>
+               {/* Card 2 */}
+               <div className="feature-card rounded-2xl overflow-hidden group shadow-xl cursor-pointer hover:scale-[1.02] transition-transform duration-300">
+                  <img src="/assets/detect.webp" alt="Real-time PPE Compliance" className="w-full h-full object-cover" />
                </div>
 
                {/* Card 3 */}
-               <div className="feature-card bg-munch-card rounded-2xl p-1 overflow-hidden group shadow-xl">
-                  <div className="bg-[#1e221e] rounded-xl h-full p-6 flex flex-col justify-between min-h-[320px]">
-                     <div className="z-10">
-                        <div className="text-xs font-mono text-amber-400 mb-2">Reason</div>
-                        <h4 className="text-white font-bold text-lg mb-2">Temporal Reasoning</h4>
-                        <p className="text-slate-400 text-xs leading-relaxed">
-                           Filters out brief false positives. It understands that a worker adjusting a helmet for 2 seconds isn't a violation.
-                        </p>
-                     </div>
-                      <div className="mt-8 flex justify-center items-center h-32 relative">
-                         <Brain size={48} className="text-amber-500 opacity-80" />
-                      </div>
-                  </div>
+               <div className="feature-card rounded-2xl overflow-hidden group shadow-xl cursor-pointer hover:scale-[1.02] transition-transform duration-300">
+                   <img src="/assets/reason.webp" alt="Temporal Reasoning" className="w-full h-full object-cover" />
                </div>
 
                {/* Card 4 */}
-               <div className="feature-card bg-munch-card rounded-2xl p-1 overflow-hidden group shadow-xl">
-                  <div className="bg-[#1e221e] rounded-xl h-full p-6 flex flex-col justify-between min-h-[320px]">
-                     <div className="z-10">
-                        <div className="text-xs font-mono text-blue-400 mb-2">Log</div>
-                        <h4 className="text-white font-bold text-lg mb-2">Auditable Incident Logs</h4>
-                        <p className="text-slate-400 text-xs leading-relaxed">
-                           Comprehensive logging system. Every decision is recorded with timestamps, snapshots, and reasoning trace.
-                        </p>
-                     </div>
-                     <div className="mt-8 space-y-2">
-                        <div className="bg-white/5 p-2 rounded flex justify-between items-center border border-white/5">
-                           <span className="text-[10px] text-slate-300 font-mono">incident_492.json</span>
-                           <FileText size={12} className="text-blue-400"/>
-                        </div>
-                        <div className="bg-white/5 p-2 rounded flex justify-between items-center border border-white/5 opacity-60">
-                           <span className="text-[10px] text-slate-300 font-mono">compliance_report.pdf</span>
-                           <FileText size={12} className="text-blue-400"/>
-                        </div>
-                     </div>
-                  </div>
+               <div className="feature-card rounded-2xl overflow-hidden group shadow-xl cursor-pointer hover:scale-[1.02] transition-transform duration-300">
+                   <img src="/assets/log.webp" alt="Auditable Incident Logs" className="w-full h-full object-cover" />
                </div>
             </div>
          </div>
@@ -290,30 +224,54 @@ const LandingPage = ({ onEnter }: { onEnter: () => void }) => {
                </div>
             </div>
 
-             {/* DEMO / SNAPSHOT */}
-             <div className="mt-20 bg-[#111] rounded-2xl p-2 border border-white/10 shadow-2xl overflow-hidden max-w-4xl mx-auto">
-                <div className="flex items-center gap-2 px-4 py-2 bg-[#0a0a0a] border-b border-white/5">
-                   <div className="flex gap-1.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
-                      <div className="w-2.5 h-2.5 rounded-full bg-amber-500/50"></div>
-                      <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/50"></div>
+             {/* DEMO / SNAPSHOTS */}
+             <div className="mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                {/* Snapshot 1 */}
+                <div className="bg-[#111] rounded-2xl p-2 border border-white/10 shadow-2xl overflow-hidden group hover:border-white/20 transition-colors">
+                   <div className="flex items-center gap-2 px-4 py-2 bg-[#0a0a0a] border-b border-white/5">
+                      <div className="flex gap-1.5">
+                         <div className="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                         <div className="w-2.5 h-2.5 rounded-full bg-amber-500/50"></div>
+                         <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/50"></div>
+                      </div>
+                      <span className="ml-4 text-[10px] font-mono text-slate-500">sentinel_dashboard_v1.0.exe</span>
                    </div>
-                   <span className="ml-4 text-[10px] font-mono text-slate-500">sentinel_dashboard_preview.exe</span>
-                </div>
-                {/* Embedded Live Feed as "Screenshot" */}
-                <div className="h-[400px] relative pointer-events-none">
-                    <ErrorBoundary>
-                        <VideoPlayer workers={DEMO_WORKERS} simplified={true} />
-                    </ErrorBoundary>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                    <div className="absolute bottom-6 left-6 text-left">
-                       <div className="inline-flex items-center gap-2 px-3 py-1 bg-red-500/20 border border-red-500/50 rounded-full text-red-200 text-xs font-bold mb-2">
-                          <AlertTriangle size={12} />
-                          VIOLATION DETECTED
+                   <div className="relative overflow-hidden">
+                       <img 
+                         src="/assets/asset1.webp" 
+                         alt="Sentinel Dashboard Interface" 
+                         className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                       />
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                       <div className="absolute bottom-4 left-4">
+                          <div className="text-white text-sm font-bold">Real-time Monitoring</div>
+                          <div className="text-slate-400 text-xs">Multi-zone tracking interface</div>
                        </div>
-                       <div className="text-white text-lg font-bold">Worker detected in Excavation Pit</div>
-                       <div className="text-slate-400 text-sm">Zone Violation • Missing Vest • Confidence 98%</div>
-                    </div>
+                   </div>
+                </div>
+
+                {/* Snapshot 2 */}
+                <div className="bg-[#111] rounded-2xl p-2 border border-white/10 shadow-2xl overflow-hidden group hover:border-white/20 transition-colors">
+                   <div className="flex items-center gap-2 px-4 py-2 bg-[#0a0a0a] border-b border-white/5">
+                      <div className="flex gap-1.5">
+                         <div className="w-2.5 h-2.5 rounded-full bg-red-500/50"></div>
+                         <div className="w-2.5 h-2.5 rounded-full bg-amber-500/50"></div>
+                         <div className="w-2.5 h-2.5 rounded-full bg-emerald-500/50"></div>
+                      </div>
+                      <span className="ml-4 text-[10px] font-mono text-slate-500">incident_log_viewer.exe</span>
+                   </div>
+                   <div className="relative overflow-hidden">
+                       <img 
+                         src="/assets/asset%202.webp" 
+                         alt="Incident Reporting System" 
+                         className="w-full h-auto object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                       />
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                       <div className="absolute bottom-4 left-4">
+                          <div className="text-white text-sm font-bold">Incident Analytics</div>
+                          <div className="text-slate-400 text-xs">Automated violation logging</div>
+                       </div>
+                   </div>
                 </div>
              </div>
          </div>
@@ -389,7 +347,7 @@ const LandingPage = ({ onEnter }: { onEnter: () => void }) => {
              <div className="grid grid-cols-2 md:grid-cols-4 max-w-5xl mx-auto text-left text-xs text-slate-400 border-t border-white/10 pt-12 gap-8">
                  <div>
                     <div className="text-white font-bold mb-4 flex items-center gap-2">
-                       <div className="w-3 h-3 bg-white rounded-full"></div> Sentinel®
+                       <Logo className="w-5 h-5" /> Sentinel®
                     </div>
                     <p>San Francisco, CA</p>
                     <p className="mt-4">contact@sentinel.ai</p>

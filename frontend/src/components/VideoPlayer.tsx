@@ -1,10 +1,48 @@
-import React from 'react';
-import { AlertTriangle, Shield, User } from 'lucide-react';
+import React, { useState } from 'react';
+import { AlertTriangle, Shield, User, ZoomIn, ZoomOut, Move } from 'lucide-react';
 import { Worker, ZONES } from '../api';
 
 const VideoPlayer = ({ workers = [], simplified = false }: { workers?: Worker[], simplified?: boolean }) => {
+  const [zoom, setZoom] = useState(1);
+  const [pan, setPan] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleWheel = (e: React.WheelEvent) => {
+    if (simplified) return;
+    const newZoom = Math.max(1, Math.min(4, zoom + (e.deltaY > 0 ? -0.1 : 0.1)));
+    setZoom(newZoom);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+     if (simplified || zoom === 1) return;
+     setIsDragging(true);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+     if (!isDragging) return;
+     setPan({
+        x: pan.x + e.movementX,
+        y: pan.y + e.movementY
+     });
+  };
+
+  const handleMouseUp = () => setIsDragging(false);
+
   return (
-    <div className={`relative w-full h-full bg-black rounded-lg overflow-hidden border border-sentinel-border group ${!simplified && 'shadow-2xl'}`}>
+    <div 
+        className={`relative w-full h-full bg-black rounded-lg overflow-hidden border border-sentinel-border group ${!simplified && 'shadow-2xl'}`}
+        onWheel={handleWheel}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseUp}
+        style={{ cursor: zoom > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default' }}
+    >
+      <div 
+        className="w-full h-full transition-transform duration-100 ease-out origin-center"
+        style={{ transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)` }}
+      >
+      
       {/* Simulated Video Background */}
       <div className="absolute inset-0 bg-slate-900 opacity-80 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black">
         {/* Grid lines for perspective feel */}
@@ -101,9 +139,10 @@ const VideoPlayer = ({ workers = [], simplified = false }: { workers?: Worker[],
           </div>
         );
       })}
+      </div>
 
       {/* Camera UI Overlay */}
-      <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none">
+      <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none z-50">
         <div className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-sm animate-pulse flex items-center gap-2 w-fit">
           <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
           LIVE REC
@@ -116,9 +155,30 @@ const VideoPlayer = ({ workers = [], simplified = false }: { workers?: Worker[],
       </div>
 
       {!simplified && (
-          <div className="absolute bottom-4 right-4 pointer-events-none">
-            <div className="text-xs font-mono text-emerald-500/80">AI CONFIDENCE: 98.4%</div>
-          </div>
+          <>
+            <div className="absolute bottom-4 right-4 pointer-events-none z-50">
+                <div className="text-xs font-mono text-emerald-500/80">AI CONFIDENCE: 98.4%</div>
+            </div>
+            
+            {/* Zoom Controls */}
+            <div className="absolute bottom-4 left-4 flex flex-col gap-1 z-50">
+                <button 
+                    onClick={(e) => { e.stopPropagation(); setZoom(Math.min(4, zoom + 0.5)); }}
+                    className="p-1.5 bg-slate-900/80 border border-slate-700 rounded text-slate-300 hover:text-white transition-colors"
+                >
+                    <ZoomIn size={14} />
+                </button>
+                <button 
+                    onClick={(e) => { e.stopPropagation(); setZoom(Math.max(1, zoom - 0.5)); }}
+                    className="p-1.5 bg-slate-900/80 border border-slate-700 rounded text-slate-300 hover:text-white transition-colors"
+                >
+                    <ZoomOut size={14} />
+                </button>
+                <div className="bg-slate-900/80 border border-slate-700 rounded px-1.5 py-0.5 text-[10px] text-center text-slate-400 font-mono">
+                    {zoom.toFixed(1)}x
+                </div>
+            </div>
+          </>
       )}
     </div>
   );

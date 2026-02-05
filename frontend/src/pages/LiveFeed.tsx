@@ -14,13 +14,16 @@ import {
 } from 'lucide-react';
 import VideoPlayer from '../components/VideoPlayer';
 import IncidentCard from '../components/IncidentCard';
-import { Worker, Incident, TimelineEvent, SystemState } from '../api';
+import Logo from '../components/Logo';
+import CameraPanel from '../components/CameraPanel';
+import AnalysisControls from '../components/AnalysisControls';
+import { Worker, Incident, TimelineEvent, SystemState, Camera } from '../api';
 
 const Header = ({ onBack, stats }: { onBack: () => void, stats: { cpu: number, latency: number } }) => (
   <header className="h-16 bg-sentinel-panel border-b border-sentinel-border flex items-center justify-between px-6 shrink-0 relative z-20">
     <div className="flex items-center gap-3 cursor-pointer" onClick={onBack} title="Back to Home">
-      <div className="w-9 h-9 bg-amber-500 rounded flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.3)] hover:scale-105 transition-transform">
-        <Eye className="w-5 h-5 text-slate-900" strokeWidth={2.5} />
+      <div className="w-9 h-9 rounded flex items-center justify-center hover:scale-105 transition-transform">
+        <Logo className="w-full h-full" fallbackType="eye" />
       </div>
       <div>
         <h1 className="text-lg font-bold text-white tracking-widest font-mono">SENTINEL</h1>
@@ -106,6 +109,8 @@ const LiveFeedPage = ({ onBack }: { onBack: () => void }) => {
   const [timelineEvents, setTimelineEvents] = useState<TimelineEvent[]>([]);
   const [stats, setStats] = useState({ cpu: 14, latency: 24 });
   const [isConnected, setIsConnected] = useState(false);
+  const [activeCamera, setActiveCamera] = useState<Camera | null>(null);
+  const [isAnalyzing, setIsAnalyzing] = useState(true);
 
   // WebSocket Connection
   useEffect(() => {
@@ -120,18 +125,15 @@ const LiveFeedPage = ({ onBack }: { onBack: () => void }) => {
         try {
             const data: SystemState = JSON.parse(event.data);
             setWorkers(data.workers);
-            
-            // Map incidents to have Date objects if components rely on Date methods,
-            // but our interfaces say 'string' now. 
-            // However, IncidentCard uses .toLocaleTimeString(), so we MUST cast to any or fix IncidentCard.
-            // Let's cast for now to avoid modifying IncidentCard significantly or fix IncidentCard logic.
-            // Actually, best to cast here to satisfy existing component logic if we don't change IncidentCard.
-            // But I updated Incident interface to string. So IncidentCard will error if I don't update it.
-            // I'll update IncidentCard to handle string or Date.
-            // For now, let's keep the state as is (matching API) and handle conversion in render.
             setIncidents(data.incidents);
             setTimelineEvents(data.timeline);
-            setStats(data.stats);
+            setStats(data.stats as any);
+            // Sync analysis state from backend stats if possible, or just assume local control wins for now
+            if (data.stats.system_status === 'Stopped') {
+                setIsAnalyzing(false);
+            } else {
+                setIsAnalyzing(true);
+            }
         } catch (e) {
             console.error("Error parsing websocket message", e);
         }
@@ -154,11 +156,17 @@ const LiveFeedPage = ({ onBack }: { onBack: () => void }) => {
       <Header onBack={onBack} stats={stats} />
 
       <main className="flex-1 flex overflow-hidden">
-        {/* Left Panel: Video Feed */}
+        {/* Left Sidebar: Controls */}
+        <section className="w-64 flex flex-col p-4 border-r border-sentinel-border overflow-y-auto custom-scrollbar">
+            <CameraPanel activeCameraId={activeCamera?.id || null} onCameraSelect={setActiveCamera} />
+            <AnalysisControls isAnalyzing={isAnalyzing} onStatusChange={setIsAnalyzing} />
+        </section>
+
+        {/* Center Panel: Video Feed */}
         <section className="flex-[3] p-6 flex flex-col min-w-0 border-r border-sentinel-border relative">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-              <Video className="w-4 h-4 text-amber-500" /> Sector 4 Live Feed
+              <Video className="w-4 h-4 text-amber-500" /> {activeCamera ? activeCamera.name : 'Live Feed'}
             </h2>
             <div className="flex gap-2">
                 <div className={`flex items-center gap-2 px-3 py-1 bg-sentinel-panel rounded text-[10px] border border-sentinel-border ${isConnected ? 'text-emerald-400' : 'text-rose-400'}`}>
@@ -205,7 +213,7 @@ const LiveFeedPage = ({ onBack }: { onBack: () => void }) => {
                 </div>
                 <div className="text-[10px] text-slate-500 uppercase font-bold tracking-wider">System Status</div>
                 <div className={`text-2xl font-mono font-bold mt-1 ${isConnected ? 'text-emerald-500' : 'text-rose-500'}`}>
-                    {isConnected ? 'RUNNING' : 'CONNECTING'}
+                    {isConnected ? (isAnalyzing ? 'RUNNING' : 'PAUSED') : 'CONNECTING'}
                 </div>
              </div>
           </div>
@@ -231,12 +239,6 @@ const LiveFeedPage = ({ onBack }: { onBack: () => void }) => {
                </div>
             ) : (
                incidents.map(incident => (
-                 // IncidentCard expects Date in timestamp if we didn't change it, but we changed interface to string.
-                 // We need to check IncidentCard implementation.
-                 // It calls .toLocaleTimeString(). String doesn't have that.
-                 // So we must cast or convert. 
-                 // Let's create a wrapper object or modify IncidentCard.
-                 // Modifying IncidentCard is better.
                  <IncidentCard key={incident.id} incident={incident} />
                ))
             )}
