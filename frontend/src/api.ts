@@ -1,4 +1,6 @@
 
+import axios from 'axios';
+
 export interface Worker {
   id: string;
   x: number; // percentage 0-100
@@ -57,58 +59,104 @@ export const ZONES = [
 
 const API_URL = 'http://localhost:8000';
 
+// Axios instance with interceptor for token
+export const axiosInstance = axios.create({
+    baseURL: API_URL,
+});
+
+axiosInstance.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => Promise.reject(error)
+);
+
 export const api = {
     getCameras: async (): Promise<Camera[]> => {
-        const res = await fetch(`${API_URL}/cameras`);
-        return res.json();
+        const res = await axiosInstance.get('/cameras');
+        return res.data;
     },
     addCamera: async (camera: Camera): Promise<Camera> => {
-        const res = await fetch(`${API_URL}/cameras`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(camera)
-        });
-        return res.json();
+        const res = await axiosInstance.post('/cameras', camera);
+        return res.data;
+    },
+    deleteCamera: async (cameraId: string) => {
+        const res = await axiosInstance.delete(`/cameras/${cameraId}`);
+        return res.data;
     },
     selectCamera: async (cameraId: string) => {
-        const res = await fetch(`${API_URL}/cameras/${cameraId}/select`, { method: 'POST' });
-        return res.json();
+        const res = await axiosInstance.post(`/cameras/${cameraId}/select`);
+        return res.data;
     },
     uploadVideo: async (file: File): Promise<Camera> => {
         const formData = new FormData();
         formData.append('file', file);
-        const res = await fetch(`${API_URL}/upload-video`, {
-            method: 'POST',
-            body: formData
-        });
-        return res.json();
+        const res = await axiosInstance.post('/upload-video', formData);
+        return res.data;
+    },
+    processVideo: async (cameraId: string) => {
+        const res = await axiosInstance.post(`/analysis/process/${cameraId}`);
+        return res.data;
+    },
+    getAnalysisStatus: async (taskId: string) => {
+        const res = await axiosInstance.get(`/analysis/status/${taskId}`);
+        return res.data;
     },
     startAnalysis: async () => {
-        const res = await fetch(`${API_URL}/analysis/start`, { method: 'POST' });
-        return res.json();
+        const res = await axiosInstance.post('/analysis/start');
+        return res.data;
     },
     stopAnalysis: async () => {
-        const res = await fetch(`${API_URL}/analysis/stop`, { method: 'POST' });
-        return res.json();
+        const res = await axiosInstance.post('/analysis/stop');
+        return res.data;
     },
     getIncidents: async (): Promise<Incident[]> => {
-        const res = await fetch(`${API_URL}/incidents`);
-        return res.json();
+        const res = await axiosInstance.get('/incidents');
+        return res.data;
     },
     deleteIncident: async (id: string) => {
-        const res = await fetch(`${API_URL}/incidents/${id}`, { method: 'DELETE' });
-        return res.json();
+        const res = await axiosInstance.delete(`/incidents/${id}`);
+        return res.data;
     },
     resolveIncident: async (id: string) => {
-        const res = await fetch(`${API_URL}/incidents/${id}/resolve`, { method: 'POST' });
-        return res.json();
+        const res = await axiosInstance.post(`/incidents/${id}/resolve`);
+        return res.data;
     },
     addNote: async (id: string, note: string) => {
-        const res = await fetch(`${API_URL}/incidents/${id}/notes`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ note })
-        });
-        return res.json();
+        const res = await axiosInstance.post(`/incidents/${id}/notes`, { note });
+        return res.data;
+    },
+    // Auth & Profile API
+    login: async (username: string, password: string) => {
+        const formData = new FormData();
+        formData.append('username', username);
+        formData.append('password', password);
+        const res = await axiosInstance.post('/token', formData);
+        return res.data;
+    },
+    register: async (username: string, password: string) => {
+        const res = await axiosInstance.post('/register', { username, password });
+        return res.data;
+    },
+    getProfile: async () => {
+        const res = await axiosInstance.get('/users/me');
+        return res.data;
+    },
+    getGeminiKey: async () => {
+        const res = await axiosInstance.get('/users/me/gemini-key');
+        return res.data;
+    },
+    updateGeminiKey: async (key: string, password: string) => {
+        const res = await axiosInstance.put('/users/me/gemini-key', { gemini_api_key: key, password });
+        return res.data;
+    },
+    removeGeminiKey: async (password: string) => {
+        const res = await axiosInstance.delete('/users/me/gemini-key', { data: { password } });
+        return res.data;
     }
 };
+

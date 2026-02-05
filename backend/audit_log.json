@@ -1,0 +1,378 @@
+[
+  {
+    "timestamp": "2026-02-05T02:13:23.799820",
+    "user_id": 1,
+    "action": "USER_REGISTER",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:13:24.048415",
+    "user_id": 1,
+    "action": "USER_LOGIN",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:13:24.287333",
+    "user_id": 1,
+    "action": "USER_REGISTER",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:13:24.498953",
+    "user_id": 1,
+    "action": "USER_LOGIN",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:13:24.737093",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:13:24.953176",
+    "user_id": 1,
+    "action": "KEY_UPDATE_FAILED",
+    "status": "FAILURE",
+    "details": "Incorrect password",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:13:25.201033",
+    "user_id": 1,
+    "action": "USER_REGISTER",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:13:25.412234",
+    "user_id": 1,
+    "action": "USER_LOGIN",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:13:25.634801",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:13:25.853203",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:13:26.072438",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:13:26.080235",
+    "user_id": 1,
+    "action": "RATE_LIMIT_EXCEEDED",
+    "status": "FAILURE",
+    "details": "Max key update attempts reached",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:13:26.300931",
+    "user_id": 2,
+    "action": "USER_REGISTER",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:13:26.512920",
+    "user_id": 2,
+    "action": "USER_LOGIN",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:14:02.803086",
+    "user_id": 1,
+    "action": "USER_REGISTER",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:14:03.021734",
+    "user_id": 1,
+    "action": "USER_LOGIN",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:14:03.335641",
+    "user_id": 1,
+    "action": "USER_REGISTER",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:14:03.548397",
+    "user_id": 1,
+    "action": "USER_LOGIN",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:14:03.770972",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:14:03.990687",
+    "user_id": 1,
+    "action": "KEY_UPDATE_FAILED",
+    "status": "FAILURE",
+    "details": "Incorrect password",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:14:04.208593",
+    "user_id": 1,
+    "action": "KEY_REMOVE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key removed",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:14:04.454025",
+    "user_id": 1,
+    "action": "USER_REGISTER",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:14:04.677178",
+    "user_id": 1,
+    "action": "USER_LOGIN",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:14:04.894566",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:14:05.110364",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:14:05.329123",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:14:05.548206",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:14:05.766840",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "testclient"
+  },
+  {
+    "timestamp": "2026-02-05T02:14:05.773821",
+    "user_id": 1,
+    "action": "RATE_LIMIT_EXCEEDED",
+    "status": "FAILURE",
+    "details": "Max key update attempts reached",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:14:50.625420",
+    "user_id": 1,
+    "action": "USER_REGISTER",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:14:50.840122",
+    "user_id": 1,
+    "action": "USER_LOGIN",
+    "status": "SUCCESS",
+    "details": null,
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:17:54.623287",
+    "user_id": 1,
+    "action": "KEY_UPDATE_FAILED",
+    "status": "FAILURE",
+    "details": "Incorrect password",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "timestamp": "2026-02-05T02:18:32.858289",
+    "user_id": 1,
+    "action": "KEY_UPDATE",
+    "status": "SUCCESS",
+    "details": "Gemini API Key updated",
+    "ip_address": "127.0.0.1"
+  },
+  {
+    "timestamp": "2026-02-05T02:21:53.030529",
+    "user_id": 1,
+    "action": "VIDEO_UPLOAD",
+    "status": "SUCCESS",
+    "details": "Uploaded video: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:21:56.043997",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:22:17.323537",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:22:19.639780",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:25:17.169070",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:32:39.849817",
+    "user_id": 1,
+    "action": "VIDEO_UPLOAD",
+    "status": "SUCCESS",
+    "details": "Uploaded video: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:32:42.307201",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:33:05.048675",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Site Camera 1",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:33:09.725183",
+    "user_id": 1,
+    "action": "CAMERA_DELETE",
+    "status": "SUCCESS",
+    "details": "Deleted camera: Site Camera 1",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:33:11.903196",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:33:15.367317",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:33:16.157685",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:33:16.374075",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  },
+  {
+    "timestamp": "2026-02-05T02:33:17.134811",
+    "user_id": 1,
+    "action": "CAMERA_SELECT",
+    "status": "SUCCESS",
+    "details": "Selected camera: Upload: The manufacturing process of uncoated iron woks. #workers #craft #satisfying - Worker Vision (1080p, h264).mp4",
+    "ip_address": null
+  }
+]

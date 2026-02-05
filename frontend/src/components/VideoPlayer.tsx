@@ -1,11 +1,48 @@
-import React, { useState } from 'react';
-import { AlertTriangle, Shield, User, ZoomIn, ZoomOut, Move } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { AlertTriangle, Shield, User, ZoomIn, ZoomOut } from 'lucide-react';
 import { Worker, ZONES } from '../api';
 
-const VideoPlayer = ({ workers = [], simplified = false }: { workers?: Worker[], simplified?: boolean }) => {
+interface VideoPlayerProps {
+    workers?: Worker[];
+    simplified?: boolean;
+    videoUrl?: string;
+    metadata?: any;
+}
+
+const VideoPlayer = ({ workers: propWorkers = [], simplified = false, videoUrl, metadata }: VideoPlayerProps) => {
   const [zoom, setZoom] = useState(1);
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [localWorkers, setLocalWorkers] = useState<Worker[]>([]);
+
+  // If we have videoUrl and metadata, we sync workers to video time
+  const workers = videoUrl && metadata ? localWorkers : propWorkers;
+
+  useEffect(() => {
+    if (!videoUrl || !metadata) return;
+    
+    let animationFrameId: number;
+    
+    const update = () => {
+        if (videoRef.current) {
+            const currentTime = videoRef.current.currentTime;
+            // Find closest frame in metadata
+            const frameData = metadata.frames.find((f: any, i: number) => {
+                const next = metadata.frames[i+1];
+                return f.timestamp <= currentTime && (!next || next.timestamp > currentTime);
+            });
+            
+            if (frameData) {
+                setLocalWorkers(frameData.workers);
+            }
+        }
+        animationFrameId = requestAnimationFrame(update);
+    };
+    
+    animationFrameId = requestAnimationFrame(update);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [videoUrl, metadata]);
 
   const handleWheel = (e: React.WheelEvent) => {
     if (simplified) return;
@@ -43,21 +80,33 @@ const VideoPlayer = ({ workers = [], simplified = false }: { workers?: Worker[],
         style={{ transform: `scale(${zoom}) translate(${pan.x / zoom}px, ${pan.y / zoom}px)` }}
       >
       
-      {/* Simulated Video Background */}
-      <div className="absolute inset-0 bg-slate-900 opacity-80 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black">
-        {/* Grid lines for perspective feel */}
-        <div className="absolute inset-0 opacity-20" style={{ 
-          backgroundImage: 'linear-gradient(rgba(100, 116, 139, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(100, 116, 139, 0.3) 1px, transparent 1px)',
-          backgroundSize: '100px 100px',
-          transform: 'perspective(1000px) rotateX(10deg) scale(1.1)'
-        }}></div>
-      </div>
+      {/* Video Layer */}
+      {videoUrl ? (
+          <video 
+            ref={videoRef}
+            src={videoUrl}
+            className="absolute inset-0 w-full h-full object-contain"
+            controls={!simplified}
+            loop
+            crossOrigin="anonymous"
+          />
+      ) : (
+          /* Simulated Video Background */
+          <div className="absolute inset-0 bg-slate-900 opacity-80 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-slate-800 via-slate-900 to-black">
+            {/* Grid lines for perspective feel */}
+            <div className="absolute inset-0 opacity-20" style={{ 
+              backgroundImage: 'linear-gradient(rgba(100, 116, 139, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(100, 116, 139, 0.3) 1px, transparent 1px)',
+              backgroundSize: '100px 100px',
+              transform: 'perspective(1000px) rotateX(10deg) scale(1.1)'
+            }}></div>
+          </div>
+      )}
       
       {/* Zones Overlay */}
       {ZONES.filter(z => z.name !== 'Safe').map((zone, i) => (
         <div 
           key={i}
-          className="absolute border-2 border-dashed flex items-start justify-end p-2 transition-opacity duration-300"
+          className="absolute border-2 border-dashed flex items-start justify-end p-2 transition-opacity duration-300 pointer-events-none"
           style={{
             left: `${zone.x}%`,
             top: `${zone.y}%`,
@@ -84,7 +133,7 @@ const VideoPlayer = ({ workers = [], simplified = false }: { workers?: Worker[],
         return (
           <div
             key={worker.id}
-            className="absolute transition-all duration-700 ease-in-out z-10"
+            className="absolute transition-all duration-100 ease-linear z-10 pointer-events-none"
             style={{
               left: `${worker.x}%`,
               top: `${worker.y}%`,
@@ -145,23 +194,19 @@ const VideoPlayer = ({ workers = [], simplified = false }: { workers?: Worker[],
       <div className="absolute top-4 left-4 flex flex-col gap-2 pointer-events-none z-50">
         <div className="bg-red-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-sm animate-pulse flex items-center gap-2 w-fit">
           <div className="w-1.5 h-1.5 bg-white rounded-full"></div>
-          LIVE REC
+          {videoUrl ? 'PLAYBACK' : 'LIVE REC'}
         </div>
         {!simplified && (
             <div className="text-slate-400 text-xs font-mono bg-black/40 px-2 py-1 rounded backdrop-blur-sm w-fit border border-white/5">
-                CAM_04_NORTH_SECTOR
+                {videoUrl ? 'UPLOADED_FOOTAGE' : 'CAM_04_NORTH_SECTOR'}
             </div>
         )}
       </div>
 
       {!simplified && (
           <>
-            <div className="absolute bottom-4 right-4 pointer-events-none z-50">
-                <div className="text-xs font-mono text-emerald-500/80">AI CONFIDENCE: 98.4%</div>
-            </div>
-            
             {/* Zoom Controls */}
-            <div className="absolute bottom-4 left-4 flex flex-col gap-1 z-50">
+            <div className="absolute bottom-12 left-4 flex flex-col gap-1 z-50">
                 <button 
                     onClick={(e) => { e.stopPropagation(); setZoom(Math.min(4, zoom + 0.5)); }}
                     className="p-1.5 bg-slate-900/80 border border-slate-700 rounded text-slate-300 hover:text-white transition-colors"
